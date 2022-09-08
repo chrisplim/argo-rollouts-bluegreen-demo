@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: bg-rollout
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: bg-rollout
+  template:
+    metadata:
+      labels:
+        app: bg-rollout
+    spec:
+      containers:
+      - name: rollouts-demo
+        image: argoproj/rollouts-demo:blue
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+  strategy:
+    blueGreen:
+      activeService: bg-rollout-service
+      previewService: bg-rollout-service-preview
+      prePromotionAnalysis:
+        templates:
+        - templateName: smoke-tests

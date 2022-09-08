@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bg-rollout-configmap
+data:
+  ENV_VAR1: foo
+  ENV_VAR2: bar

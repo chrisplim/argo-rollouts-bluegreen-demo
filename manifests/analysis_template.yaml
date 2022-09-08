@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: smoke-tests
+spec:
+  metrics:
+  - name: smoke-test
+    provider:
+      job:
+        spec:
+          backoffLimit: 1
+          template:
+            spec:
+              containers:
+              - name: test
+                image: alpine:latest
+                imagePullPolicy: IfNotPresent
+                command: ["/bin/sh", "-c", "exit 0"]
+                envFrom:
+                - configMapRef:
+                    name: bg-rollout-configmap
+              restartPolicy: Never
